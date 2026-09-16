@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Joxing</title>
+    <style>
+        :root {
+    --sky-top: #BFE9F5;
+    --sky-bottom: #E6D9F5;
+    --text: #29253d;
+    --white: #ffffff;
+    --button: #ffffff;
+    --button-hover: #f1eaff;
+    --muted: #777078;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        min-height: 100%;
+        margin: 0;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: var(--text);
+        background: linear-gradient(
+            180deg,
+            var(--sky-top) 0%,
+            var(--sky-bottom) 100%
+        );
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        opacity: 1;
+        transition: opacity 0.5s ease;
+    }
+
+    body.fade-out {
+        opacity: 0;
+    }
+
+    /* Background photos */
+
+    #bg-layer {
+         position: fixed;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+    }
+
+    .photo-wrapper {
+        position: absolute;
+        width: 75px;
+        height: 75px;
+        pointer-events: auto;
+    }
+
+    .hover-bubble {
+    position: absolute;
+
+    bottom: 85px;
+    left: 50%; 
+
+    transform: translateX(-50%);
+
+    width: max-content;
+    max-width: 200px;
+
+    padding: 10px 14px;
+
+    background: white;
+    color: var(--text);
+
+    border-radius: 15px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+    opacity: 0;
+    visibility: hidden;
+
+    z-index: 999;
+
+    pointer-events: none;
+}
+
+.photo-wrapper:hover .hover-bubble {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.photo-wrapper:hover .float-photo {
+    transform: scale(1.15);
+    opacity: 1;
+}
+
+    .photo-wrapper:hover .hover-bubble {
+        opacity: 1;
+        visibility: visible;
+
+        transform:
+            translateX(-50%)
+            translateY(-5px);
+    } 
+
+    .photo-wrapper:hover .float-photo {
+        transform: scale(1.15);
+        opacity: 0.8;
+        transition: 0.2s;
+    }
+
+    .float-photo {
+        width: 75px;
+        height: 75px;
+
+        border-radius: 50%;
+        object-fit: cover;
+
+        opacity: 0.5;
+
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+
+        border: 4px solid rgba(255, 255, 255, 0.7);
+
+        cursor: pointer;
+
+        transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    /* Main menu */
+
+    .main-content {
+        position: relative;
+        z-index: 1;
+
+        min-height: 100vh;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+
+        padding: 20px;
+    }
+
+    /* Game title */
+
+    .main-content h1 {
+        margin: 0;
+
+        font-size: clamp(42px, 7vw, 80px);
+        font-weight: 900;
+        letter-spacing: -3px;
+
+        text-shadow:
+            0 4px 0 white,
+            0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .main-content h4 {
+        margin: 10px 0 30px;
+
+        font-size: 16px;
+        font-weight: 600;
+
+        background: rgba(255, 255, 255, 0.55);
+        padding: 10px 18px;
+        border-radius: 20px;
+    }
+
+    /* Buttons */
+
+    .main-content button {
+        width: 220px;
+        margin: 7px;
+
+        padding: 14px 20px;
+
+        border: none;
+        border-radius: 14px;
+
+        background: var(--button);
+        color: var(--text);
+
+        font-size: 18px;
+        font-weight: 800;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 6px 0 rgba(70, 60, 100, 0.18),
+            0 10px 20px rgba(0, 0, 0, 0.08);
+
+        transition:
+            transform 0.15s ease,
+            background 0.15s ease,
+            box-shadow 0.15s ease;
+    }
+
+    .main-content button:hover {
+        transform: translateY(-3px);
+        background: var(--button-hover);
+
+        box-shadow:
+            0 9px 0 rgba(70, 60, 100, 0.18),
+            0 14px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-content button:active {
+        transform: translateY(3px);
+
+        box-shadow:
+            0 3px 0 rgba(70, 60, 100, 0.18);
+    }
+
+    /* Dialog */
+
+    dialog {
+        width: min(420px, 80vw);
+
+        border: none;
+        border-radius: 24px;
+
+        padding: 30px;
+
+        color: var(--text);
+
+        text-align: center;
+
+        box-shadow:
+            0 25px 70px rgba(0, 0, 0, 0.25);
+    }
+
+    dialog::backdrop {
+        background: rgba(30, 25, 50, 0.35);
+        backdrop-filter: blur(5px);
+    }
+
+    dialog h1 {
+        margin-top: 0;
+    }
+
+    dialog h3 {
+        margin: 10px;
+    }
+
+    dialog button {
+        margin-top: 15px;
+
+        padding: 10px 22px;
+
+        border: none;
+        border-radius: 12px;
+
+        background: var(--text);
+        color: white;
+
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .player {
+        width: 150px;
+        height: 150px;
+
+        margin-bottom: 20px;
+
+        border-radius: 50%;
+
+        padding: 6px;
+
+        background: white;
+
+        box-shadow:
+            0 10px 30px rgba(0, 0, 0, 0.15);
+
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .player img {
+        width: 100%;
+        height: 100%;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-8px);
+        }
+    }
+
+    footer {
+        text-align: center;
+
+        padding: 30px;
+
+        font-family: Arial, sans-serif;
+
+        font-size: 9px;
+
+        letter-spacing: 2px;
+
+        color: var(--muted);
+    }
+    </style>
+</head>
+<body>
+    <div id="bg-layer"></div>
+    <div class="main-content">
+        <h1>Happy Birthday</h1>
+        <h1>Chong Jo Xing</h1>
+
+        <div class="player">
+            <img src="photos/profile.jpg" alt="Chong Jo Xing">
+        </div>
+
+        <h4>Happy 19th Birthday!!!</h4>
+        <button id="start">Play Games</button>
+        <button id="details">Details</button>
+        
+        <button id="memory">Memory</button>
+        <footer>
+
+        CREATED BY IVAN YONG • TAN YUNNRU • CHAN PEI QI • NATALIE ANG XI QI • SHERMAIN PANG SI MAN
+
+    </footer>
+    </div>
+    
+
+    <dialog id="profileDetail">
+
+        <h1>Player Profile</h1>
+        <h3>Chong Jo Xing</h3>
+        <h3>Age: 19</h3>
+        <h3>Height: 180 (for sure)</h3>
+        <h3>HP: 67</h3>
+        <h3>Braincells: -1</h3>
+        <h3>Luck: 67</h3>
+        <h3>Birthday: 🎂</h3>
+        <h3>Status: Still alive somehow</h3>
+        <h3>STPM: Surviving</h3>
+        <br>
+        <h3>🎯 MISSION: Survive another year.
+        Avoid STPM. Collect cake.
+        Do not lose your remaining braincells.</h3>
+        <button id="doneView">Done</button>
+
+    </dialog>
+
+
+    
+
+    <script>
+        const start = document.getElementById("start");
+        const details = document.getElementById("details");
+        const profile_detail = document.getElementById("profileDetail");
+        const done_view = document.getElementById("doneView");
+        const memory = document.getElementById("memory");
+
+        memory.addEventListener("click", ()=> {
+            document.body.classList.add("fade-out");
+
+            setTimeout(() => {
+                window.location.href = "memory.html";
+            }, 500);
+        });
+
+        start.addEventListener("click", () => {
+            document.body.classList.add("fade-out");
+
+            setTimeout(() => {
+                window.location.href = "game.html";
+            }, 500);
+        })
+
+
+        details.addEventListener("click", () => { 
+            profile_detail.showModal(); 
+        });
+
+        done_view.addEventListener("click", () => {
+            profile_detail.close();
+        });
+
+        const NUM_BG_PHOTOS = 20; // how many float in the background
+        const bgLayer = document.getElementById('bg-layer');
+        const bgPhotos = [];
+        const hoverMessages = [ "Jojo detected 👀",
+    "Mr. Jojo has entered the chat",
+    "STPM final boss 💀",
+    "404: Braincell Not Found",
+    "Caught in 4K",
+    "Jojo v19.0",
+    "Birthday buff activated", "Jojo v19.0🔛", "⁠Happy last teen!", "⁠All the besttt f6生", "⁠stpm 拿下3.0以上！", "⁠每天都开开心心没烦恼", "⁠未来cikgu chong"];
+
+        for (let i = 0; i < NUM_BG_PHOTOS; i++) {
+
+    // Container
+    const wrapper = document.createElement("div");
+
+    wrapper.className = "photo-wrapper";
+
+
+    // Photo
+    const img = document.createElement("img");
+
+    img.src = "photos/profile.jpg";
+
+    img.className = "float-photo";
+
+
+    // Bubble
+    const bubble = document.createElement("div");
+
+    bubble.className = "hover-bubble";
+
+
+    // Put everything together
+    wrapper.appendChild(img);
+    wrapper.appendChild(bubble);
+
+    bgLayer.appendChild(wrapper);
+
+
+    // Random position and movement
+    const data = {
+        el: wrapper,
+
+        x: Math.random() * window.innerWidth,
+
+        y: Math.random() * window.innerHeight,
+
+        vx: (Math.random() - 0.5) * 1.2,
+
+        vy: (Math.random() - 0.5) * 1.2
+    };
+
+
+    bgPhotos.push(data);
+
+
+    // When mouse enters the photo
+    wrapper.addEventListener("mouseenter", () => {
+
+         console.log("HOVER WORKING");
+
+    const randomIndex =
+        Math.floor(Math.random() * hoverMessages.length);
+
+    bubble.textContent = hoverMessages[randomIndex];
+
+    });
+
+}
+
+
+function animateBackground() {
+
+    bgPhotos.forEach(p => {
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+
+        if (
+            p.x <= 0 ||
+            p.x >= window.innerWidth - 75
+        ) {
+            p.vx *= -1;
+        }
+
+
+        if (
+            p.y <= 0 ||
+            p.y >= window.innerHeight - 75
+        ) {
+            p.vy *= -1;
+        }
+
+
+        p.el.style.left = p.x + "px";
+
+        p.el.style.top = p.y + "px";
+    });
+    requestAnimationFrame(animateBackground);
+}
+animateBackground();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Catch Alex!</title>
+<style>
+
+    :root {
+        --sky-top: #BFE9F5;
+        --sky-bottom: #E6D9F5;
+        --accent: #FF6F61;      /* coral - the "catch" color */
+        --gold: #FFD166;        /* points / sparkle color */
+        --ink: #1B3A4B;         /* dark text */
+        --card: #FFFFFF;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+        margin: 0; padding: 0; height: 100%; overflow: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 100%);
+        touch-action: none;
+        user-select: none;
+    }
+
+    #game {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Header bar */
+    #hud {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 20px;
+        z-index: 10;
+        pointer-events: none;
+    }
+    .hud-pill {
+        background: var(--card);
+        border-radius: 999px;
+        padding: 8px 18px;
+        font-weight: 700;
+        font-size: 18px;
+        color: var(--ink);
+        box-shadow: 0 4px 14px rgba(27,58,75,0.15);
+    }
+    #title {
+        position: absolute;
+        top: 70px; left: 0; right: 0;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--ink);
+        opacity: 0.6;
+        letter-spacing: 0.3px;
+        pointer-events: none;
+    }
+
+    /* The bubble containing the friend's photo */
+    .bubble {
+        position: absolute;
+        width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        background: var(--card);
+        border: 4px solid var(--accent);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.08s ease;
+    }
+    .bubble img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .bubble:active { transform: scale(0.9); }
+
+    .pop {
+        position: absolute;
+        font-weight: 800;
+        font-size: 22px;
+        color: var(--accent);
+        pointer-events: none;
+        animation: floatUp 0.6s ease-out forwards;
+    }
+    @keyframes floatUp {
+        0% { opacity: 1; transform: translateY(0) scale(1); }
+        100% { opacity: 0; transform: translateY(-50px) scale(1.3); }
+    }
+
+    /* Start / Game Over overlay */
+    #overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(27,58,75,0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 20;
+        backdrop-filter: blur(2px);
+    }
+    #overlay.hidden { display: none; }
+    #panel {
+        background: var(--card);
+        border-radius: 24px;
+        padding: 36px 28px;
+        text-align: center;
+        width: 82%;
+        max-width: 320px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+    }
+    #panel h1 {
+        margin: 0 0 6px;
+        font-size: 26px;
+        color: var(--ink);
+    }
+    #panel p {
+        margin: 0 0 22px;
+        font-size: 15px;
+        color: var(--ink);
+        opacity: 0.7;
+        line-height: 1.4;
+    }
+    #panel .big-score {
+        font-size: 44px;
+        font-weight: 800;
+        color: var(--accent);
+        margin: 4px 0 20px;
+    }
+    button#playBtn {
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 999px;
+        padding: 14px 36px;
+        font-size: 17px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    button#playBtn:active { transform: scale(0.96); }
+
+        .back {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    pointer-events: auto;
+    cursor: pointer;
+    color: var(--ink);
+    background: var(--card);
+    padding: 8px 16px 8px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 4px 14px rgba(27,58,75,0.15);
+    transition: transform 0.1s ease;
+    }
+    .back:active { transform: scale(0.94); }
+</style>
+</head>
+<body>
+
+    <div id="game">
+    <div id="hud">
+        <a href="home.html" class="back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M15 18l-6-6 6-6"/>
+        </svg>
+        Back
+        </a>
+        <div class="hud-pill">⭐ <span id="score">0</span></div>
+        <div class="hud-pill">⏱ <span id="time">30</span>s</div>
+    </div>
+    <div id="title">Tap the photo before it disappears!</div>
+
+    <div id="overlay">
+        <div id="panel">
+        <h1 id="panelTitle">Catch Alex!</h1>
+        <p id="panelText">Tap the bubbles as fast as you can. You've got 30 seconds — good luck!</p>
+        <button id="playBtn">Play</button>
+        <button id="certBtn" style="display:none; margin-top:12px;">Download Certificate</button>
+        </div>
+    </div>
+    </div>
+
+<script>
+    const PHOTO_URL = "photos/profile.jpg";
+    const FRIEND_NAME = "Joxing";
+
+
+    const GAME_LENGTH_SECONDS = 30;
+    const SPAWN_INTERVAL_START = 1100;
+    const SPAWN_INTERVAL_MIN = 500;
+    const BUBBLE_LIFETIME = 1400;
+
+    const game = document.getElementById('game');
+    const scoreEl = document.getElementById('score');
+    const timeEl = document.getElementById('time');
+    const overlay = document.getElementById('overlay');
+    const panelTitle = document.getElementById('panelTitle');
+    const panelText = document.getElementById('panelText');
+    const playBtn = document.getElementById('playBtn');
+
+    document.getElementById('panelText').textContent =
+    `Tap the bubbles as fast as you can. You've got ${GAME_LENGTH_SECONDS} seconds — good luck!`;
+
+    let score = 0;
+    let timeLeft = GAME_LENGTH_SECONDS;
+    let spawnInterval = SPAWN_INTERVAL_START;
+    let spawnTimer = null;
+    let countdownTimer = null;
+    let running = false;
+
+    function spawnBubble() {
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+
+    const img = document.createElement('img');
+    img.src = PHOTO_URL;
+    img.alt = FRIEND_NAME;
+    bubble.appendChild(img);
+
+    const size = 84;
+    const maxX = game.clientWidth - size;
+    const maxY = game.clientHeight - size - 120; // keep clear of HUD
+    const x = Math.random() * maxX;
+    const y = 130 + Math.random() * maxY;
+
+    bubble.style.left = x + 'px';
+    bubble.style.top = y + 'px';
+
+    let caught = false;
+    const removeTimer = setTimeout(() => {
+        if (!caught) bubble.remove();
+    }, BUBBLE_LIFETIME);
+
+    bubble.addEventListener('pointerdown', () => {
+        if (caught || !running) return;
+        caught = true;
+        clearTimeout(removeTimer);
+        score++;
+        scoreEl.textContent = score;
+
+        const pop = document.createElement('div');
+        pop.className = 'pop';
+        pop.textContent = '+1';
+        pop.style.left = x + 'px';
+        pop.style.top = y + 'px';
+        game.appendChild(pop);
+        setTimeout(() => pop.remove(), 650);
+
+        bubble.remove();
+    });
+
+    game.appendChild(bubble);
+    }
+
+    function scheduleNextSpawn() {
+    spawnTimer = setTimeout(() => {
+        if (!running) return;
+        spawnBubble();
+        // ramp difficulty up slightly over time
+        spawnInterval = Math.max(SPAWN_INTERVAL_MIN, spawnInterval - 15);
+        scheduleNextSpawn();
+    }, spawnInterval);
+    }
+
+    function startGame() {
+    score = 0;
+    timeLeft = GAME_LENGTH_SECONDS;
+    spawnInterval = SPAWN_INTERVAL_START;
+    scoreEl.textContent = score;
+    timeEl.textContent = timeLeft;
+    running = true;
+    overlay.classList.add('hidden');
+    certBtn.style.display = 'none';
+
+    document.querySelectorAll('.bubble, .pop').forEach(el => el.remove());
+
+    scheduleNextSpawn();
+    countdownTimer = setInterval(() => {
+        timeLeft--;
+        timeEl.textContent = timeLeft;
+        if (timeLeft <= 0) endGame();
+    }, 1000);
+    }
+
+    function endGame() {
+        running = false;
+        clearTimeout(spawnTimer);
+        clearInterval(countdownTimer);
+        document.querySelectorAll('.bubble').forEach(el => el.remove());
+
+        panelTitle.textContent = "Time's up!";
+        panelText.innerHTML = `You caught<br><span class="big-score">${score}</span>photos of ${FRIEND_NAME} 🎉`;
+        playBtn.textContent = 'Play again';
+        certBtn.style.display = 'inline-block';
+        overlay.classList.remove('hidden');
+    }
+
+    playBtn.addEventListener('click', startGame);
+
+        const certBtn = document.getElementById('certBtn');
+
+    function generateCertificate() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1000;
+  canvas.height = 700;
+  const ctx = canvas.getContext('2d');
+
+  // ---- Background ----
+  const bgGrad = ctx.createLinearGradient(0, 0, 1000, 700);
+  bgGrad.addColorStop(0, '#FFF9F0');
+  bgGrad.addColorStop(1, '#FFF0E8');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, 1000, 700);
+
+  // ---- Outer decorative border ----
+  ctx.strokeStyle = '#FF6F61';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(30, 30, 940, 640);
+
+  ctx.strokeStyle = '#FFD166';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(42, 42, 916, 616);
+
+  // Corner flourishes
+  function corner(x, y, flipX, flipY) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(flipX, flipY);
+    ctx.strokeStyle = '#FF6F61';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(0, 40);
+    ctx.lineTo(0, 0);
+    ctx.lineTo(40, 0);
+    ctx.stroke();
+    ctx.restore();
+  }
+  corner(30, 30, 1, 1);
+  corner(970, 30, -1, 1);
+  corner(30, 670, 1, -1);
+  corner(970, 670, -1, -1);
+
+  function drawCertBody() {
+    // ---- Eyebrow ----
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#FF6F61';
+    ctx.font = '600 16px Georgia, serif';
+    ctx.fillText('★ ★ ★  C E R T I F I C A T E  ★ ★ ★', 500, 130);
+
+    // ---- Title ----
+    ctx.fillStyle = '#1B3A4B';
+    ctx.font = 'bold 46px Georgia, serif';
+    ctx.fillText('Of Achievement', 500, 185);
+
+    // divider
+    ctx.strokeStyle = '#FFD166';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(400, 205);
+    ctx.lineTo(600, 205);
+    ctx.stroke();
+
+    // ---- Body text ----
+    ctx.font = '20px Georgia, serif';
+    ctx.fillStyle = '#5A7080';
+    ctx.fillText('This certifies that', 500, 270);
+
+    ctx.font = 'italic bold 48px Georgia, serif';
+    ctx.fillStyle = '#FF6F61';
+    ctx.fillText(FRIEND_NAME, 500, 330);
+
+    ctx.font = '20px Georgia, serif';
+    ctx.fillStyle = '#5A7080';
+    ctx.fillText('successfully caught', 500, 380);
+
+    ctx.font = 'bold 64px Georgia, serif';
+    ctx.fillStyle = '#1B3A4B';
+    ctx.fillText(`${score}`, 500, 460);
+
+    ctx.font = '22px Georgia, serif';
+    ctx.fillStyle = '#5A7080';
+    ctx.fillText(score === 1 ? 'photo in 30 seconds' : 'photos in 30 seconds', 500, 495);
+
+    // ---- Seal / medal ----
+    ctx.save();
+    ctx.translate(500, 575);
+    const sealGrad = ctx.createRadialGradient(0, 0, 5, 0, 0, 45);
+    sealGrad.addColorStop(0, '#FFE29A');
+    sealGrad.addColorStop(1, '#FFD166');
+    ctx.fillStyle = sealGrad;
+    ctx.beginPath();
+    ctx.arc(0, 0, 45, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#FF6F61';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.fillStyle = '#1B3A4B';
+    ctx.font = 'bold 28px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('★', 0, 2);
+    ctx.textBaseline = 'alphabetic';
+    ctx.restore();
+
+    // ---- Date ----
+    ctx.font = '16px Georgia, serif';
+    ctx.fillStyle = '#5A7080';
+    ctx.fillText(new Date().toLocaleDateString('en-US', {
+      year: 'numeric', month: 'long', day: 'numeric'
+    }), 500, 655);
+
+    // ---- Download ----
+    const link = document.createElement('a');
+    link.download = `${FRIEND_NAME}-certificate.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
+  // ---- Try to draw friend's photo at the top as a circular badge ----
+  const photo = new Image();
+  photo.crossOrigin = 'anonymous';
+  photo.onload = function() {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(500, 90, 42, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(photo, 458, 48, 84, 84);
+    ctx.restore();
+
+    ctx.strokeStyle = '#FFD166';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(500, 90, 42, 0, Math.PI * 2);
+    ctx.stroke();
+
+    drawCertBody();
+  };
+  photo.onerror = function() {
+    // if photo fails to load (e.g. CORS), just skip it and draw the rest
+    drawCertBody();
+  };
+  photo.src = PHOTO_URL;
+}
+
+    certBtn.addEventListener('click', generateCertificate);
+</script>
+
+</body>
+</html>

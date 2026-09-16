@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>The Jojo Archives</title>
+
+    <style>
+
+        :root {
+            --background: #f5f1eb;
+            --paper: #fffdf9;
+            --text: #29262b;
+            --muted: #777078;
+            --line: #d8d0c7;
+            --accent: #806b77;
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+
+            background: var(--background);
+            color: var(--text);
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+        }
+
+        .hero {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 40px 20px;
+
+            position: relative;
+        }
+
+
+        .hero-content {
+            max-width: 750px;
+        }
+
+
+        .eyebrow {
+            font-family: Arial, sans-serif;
+
+            text-transform: uppercase;
+
+            letter-spacing: 5px;
+
+            font-size: 11px;
+
+            color: var(--muted);
+
+            margin-bottom: 25px;
+        }
+
+
+        .hero h1 {
+            margin: 0;
+
+            font-size: clamp(55px, 10vw, 110px);
+
+            font-weight: 400;
+
+            line-height: 0.9;
+
+            letter-spacing: -5px;
+        }
+
+
+        .hero p {
+            max-width: 600px;
+
+            margin: 35px auto 0;
+
+            color: var(--muted);
+
+            font-size: 18px;
+
+            line-height: 1.8;
+        }
+
+
+        .scroll-text {
+            margin-top: 60px;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 10px;
+
+            letter-spacing: 4px;
+
+            text-transform: uppercase;
+
+            color: var(--muted);
+
+            animation: floating 2s infinite;
+        }
+
+
+        @keyframes floating {
+
+            50% {
+                transform: translateY(8px);
+            }
+
+        }
+
+
+        /* =========================
+           SECTIONS
+        ========================= */
+
+        .section {
+            width: min(1100px, 90%);
+
+            margin: auto;
+
+            padding: 110px 0;
+        }
+
+
+        .section-heading {
+            text-align: center;
+
+            margin-bottom: 70px;
+        }
+
+
+        .section-heading span {
+            font-family: Arial, sans-serif;
+
+            text-transform: uppercase;
+
+            letter-spacing: 4px;
+
+            font-size: 10px;
+
+            color: var(--muted);
+        }
+
+
+        .section-heading h2 {
+            font-size: clamp(35px, 6vw, 55px);
+
+            font-weight: 400;
+
+            margin: 12px 0;
+        }
+
+
+        .section-heading p {
+            color: var(--muted);
+
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           TIMELINE
+        ========================= */
+
+        .timeline {
+            position: relative;
+        }
+
+
+        .timeline::before {
+            content: "";
+
+            position: absolute;
+
+            left: 50%;
+
+            top: 0;
+            bottom: 0;
+
+            width: 1px;
+
+            background: var(--line);
+
+            transform: translateX(-50%);
+        }
+
+
+        .memory {
+            width: 50%;
+
+            padding-bottom: 100px;
+
+            position: relative;
+        }
+
+
+        .memory:nth-child(odd) {
+            padding-right: 60px;
+
+            text-align: right;
+        }
+
+
+        .memory:nth-child(even) {
+            margin-left: 50%;
+
+            padding-left: 60px;
+
+            text-align: left;
+        }
+
+
+        /* Timeline dot */
+
+        .memory::after {
+            content: "";
+
+            position: absolute;
+
+            top: 5px;
+
+            width: 11px;
+            height: 11px;
+
+            border-radius: 50%;
+
+            background: var(--background);
+
+            border: 2px solid var(--accent);
+        }
+
+
+        .memory:nth-child(odd)::after {
+            right: -7px;
+        }
+
+
+        .memory:nth-child(even)::after {
+            left: -7px;
+        }
+
+
+        .date {
+            font-family: Arial, sans-serif;
+
+            font-size: 10px;
+
+            letter-spacing: 3px;
+
+            text-transform: uppercase;
+
+            color: var(--muted);
+        }
+
+
+        .memory h3 {
+            font-size: 27px;
+
+            font-weight: 400;
+
+            margin: 10px 0;
+        }
+
+
+        .memory p {
+            color: var(--muted);
+
+            line-height: 1.8;
+
+            font-size: 15px;
+        }
+
+
+        /* =========================
+           PHOTO
+        ========================= */
+
+        .photo {
+            margin: 25px 0;
+
+            background: var(--paper);
+
+            padding: 10px 10px 35px;
+
+            box-shadow:
+                0 12px 35px rgba(40, 35, 40, 0.10);
+
+            transform: rotate(-1.5deg);
+
+            transition: 0.3s;
+        }
+
+
+        .memory:nth-child(even) .photo {
+            transform: rotate(1.5deg);
+        }
+
+
+        .photo:hover {
+            transform:
+                rotate(0deg)
+                translateY(-6px);
+        }
+
+
+        /*
+            EMPTY PHOTO PLACEHOLDER
+
+            Put your image here later:
+
+            <img src="photos/yourphoto.jpg">
+
+            For now, the box will simply appear empty.
+        */
+
+        .photo-placeholder {
+            width: 100%;
+
+            aspect-ratio: 4 / 3;
+
+            background: #e4dfd8;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #aaa39d;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .photo-caption {
+            margin-top: 12px;
+
+            font-style: italic;
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           EMOTIONAL SECTION
+        ========================= */
+
+        .emotional {
+            min-height: 80vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 80px 20px;
+
+            background: #29262b;
+
+            color: #f8f4ef;
+        }
+
+
+        .emotional-content {
+            max-width: 780px;
+        }
+
+
+        .emotional-small {
+            font-family: Arial, sans-serif;
+
+            text-transform: uppercase;
+
+            letter-spacing: 5px;
+
+            font-size: 10px;
+
+            opacity: 0.55;
+        }
+
+
+        .emotional h2 {
+            font-size: clamp(35px, 6vw, 65px);
+
+            line-height: 1.15;
+
+            font-weight: 400;
+
+            margin: 25px 0;
+        }
+
+
+        .emotional p {
+            font-size: 17px;
+
+            line-height: 1.9;
+
+            color: #c9c2c8;
+        }
+
+
+        /* =========================
+           FINAL MESSAGE
+        ========================= */
+
+        .final {
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 100px 20px;
+        }
+
+
+        .final-content {
+            max-width: 720px;
+        }
+
+
+        .final h2 {
+            font-size: clamp(45px, 7vw, 75px);
+
+            font-weight: 400;
+
+            margin: 0 0 30px;
+        }
+
+
+        .final p {
+            font-size: 18px;
+
+            line-height: 1.9;
+
+            color: var(--muted);
+        }
+
+
+        .final-photo {
+            margin: 30px auto;
+            width: 400px;
+            max-width: 80vw;
+
+            background: var(--paper);
+            padding: 10px 10px 30px;
+
+            box-shadow: 0 20px 50px rgba(40, 35, 40, 0.15);
+
+            transform: rotate(-1deg);
+        }
+
+        .final-photo img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+
+        .final-photo .photo-placeholder {
+            aspect-ratio: 4 / 3;
+        }
+
+
+        /* =========================
+           BACK BUTTON
+        ========================= */
+
+        .back {
+            display: inline-block;
+
+            margin-top: 30px;
+
+            padding: 13px 25px;
+
+            border: 1px solid var(--text);
+
+            color: var(--text);
+
+            text-decoration: none;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 11px;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        body.page-loaded {
+            opacity: 1;
+        }
+
+
+        .back:hover {
+            background: var(--text);
+
+            color: white;
+        }
+
+
+        footer {
+            text-align: center;
+
+            padding: 30px;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 9px;
+
+            letter-spacing: 2px;
+
+            color: var(--muted);
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .timeline::before {
+                left: 8px;
+            }
+
+
+            .memory,
+            .memory:nth-child(even),
+            .memory:nth-child(odd) {
+
+                width: 100%;
+
+                margin-left: 0;
+
+                padding-left: 35px;
+
+                padding-right: 0;
+
+                text-align: left;
+            }
+
+
+            .memory::after,
+            .memory:nth-child(even)::after,
+            .memory:nth-child(odd)::after {
+
+                left: 2px;
+
+                right: auto;
+            }
+
+
+            .photo,
+            .memory:nth-child(even) .photo {
+
+                transform: rotate(0);
+            }
+
+        }
+
+        .back-home {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+
+            width: 45px;
+            height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: white;
+            color: #29262b;
+
+            text-decoration: none;
+
+            font-size: 25px;
+
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+
+            z-index: 100;
+        }
+
+        .photo img {
+            width: 100%;
+            display: block;
+        }
+
+    </style>
+</head>
+
+
+<body>
+    <a href="home.html" class="back-home">←</a>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="eyebrow">
+                A birthday archive
+            </div>
+            <h1>
+                The Jojo<br>
+                Archives
+            </h1>
+            <p>
+                A collection of moments that probably should've
+                stayed private.
+                Some are embarrassing.
+                Some are stupid.
+                Some are unforgettable.
+            </p>
+            <div class="scroll-text">
+                ↓ scroll through the memories ↓
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================
+         CHAPTER 1
+    ========================= -->
+    <section class="section">
+
+        <div class="section-heading">
+
+            <span>
+                The Jojo Memories
+            </span>
+
+            <p>
+                It started with ordinary days.
+            </p>
+
+        </div>
+
+
+        <div class="timeline">
+
+
+            <!-- MEMORY 01 -->
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 01
+                </div>
+                <div class="photo">
+
+                    <!-- PUT YOUR IMAGE INSIDE SRC -->
+
+                    <img
+                        src="photos/yunan.jpg"
+                        alt="Memory 1"
+                    >
+
+                    <div class="photo-caption">
+                        "育南育南 育化南邦ver"
+                    </div>
+
+                </div>
+            </article>
+            <!-- MEMORY 02 -->
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 02
+                </div>
+                <div class="photo">
+
+                    <img
+                        src="photos/zmk扮可爱.jpg"
+                        alt="Memory 2"
+                    >
+
+
+                    <div class="photo-caption">
+                        "zmk扮可爱, 后面的也很帅"
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- MEMORY 03 -->
+            <article class="memory">
+                <div class="date">
+                    Memory 03
+                </div>
+                <div class="photo">
+
+                    <img
+                        src="photos/bye bye spm _ hi stpm.jpg"
+                        alt="Memory 3"
+                    >
+
+
+                    <div class="photo-caption">
+                        "bye bye spm, hi stpm"
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- MEMORY 04 -->
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 04
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/不为人知的一面 其实很爱拍照 很爱扮可爱🥰.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "不为人知的一面 其实很爱拍照 很爱扮可爱🥰"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 05
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/凶什么凶.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "凶什么凶, 拍video罢了吗"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 06
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/slay queen.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "slay queen， 会不会有点隐嗨了"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 07
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/uncle jo xing .jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "uncle jo xing "
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 08
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/pq眼镜？？.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "pq眼镜？？， but比pq醒目"
+                    </div>
+
+                </div>
+
+            </article>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 09
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/PHOTO-2026-09-16-00-54-43.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "当比较矮的人看jx的视角"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 10
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/朦胧美.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "朦胧美， zmk你拍老师丑照"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 11
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/看不懂你们比什么 不好意思.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "yr：看不懂你们比什么 不好意思，ivan：没事，我看得懂就好"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 12
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/要人喂喝水嘻嘻.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "要人喂喝水嘻嘻"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 13
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/最经典的打扮 美死我了😍.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "最经典的打扮 美死我了😍， slayyyy"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 14
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/去年的surpriseee🤩.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "去年的surpriseee🤩"
+                    </div>
+
+                </div>
+
+                <p>
+                    zmk你拍老师丑照
+                </p>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 15
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/地上很好睡.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "地上很好睡， 从johor 睡到现在咯你"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 16
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/年轻真好 好嫩.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "年轻真好 好嫩"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 17
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/要拿奖了 好开心.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "我们要拿奖了 好开心"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 18
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/整天拿人电话拍 很好玩meh.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "整天拿人电话拍 很好玩meh"
+                    </div>
+
+                </div>
+
+                <p>
+                    zmk你拍老师丑照
+                </p>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 19
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/谁生日呢.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "谁生日呢？"
+                    </div>
+
+                </div>
+
+                <p>
+                    zmk你拍老师丑照
+                </p>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 20
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/去玩loh.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "去玩loh"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 21
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/image.png"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "yum yum"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 22
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/lol.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "全部都醉了lol"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 23
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/我很冷lol.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "我很冷lol"
+                    </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 24
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/上课咯.jpeg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "上 chemi lol， Love U Puan Ning"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 25
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/去到哪里都要拍一下.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "去到哪里都要拍一下"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 26
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/wassup.jpeg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "wassup"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 27
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/hi,i'm sharmini.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "hi,i'm sharmini"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 28
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/其实不会游泳hahahaha.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "其实不会游泳hahahaha"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 29
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/yayy.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "yayy"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 30
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/zmk你不去帮忙.jpeg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "zmk你不去帮忙"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 31
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/要打架是吗.jpg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        "要打架是吗"
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 32
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/cepat啦.jpeg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        霸道总裁： cepat啦
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 33
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/我绷住了， 你绷住了吗.jpeg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        大家我绷住了， 你们绷住了吗
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 34
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/6767.jpeg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        后面的人： 67!!!!
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 35
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/side eye.jpeg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        你瞪我干嘛
+                    </div>
+
+                </div>
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 36
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/好热.jpeg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        你很自私勒，为什么你只吹你自己罢了
+                    </div>
+
+                </div>
+
+
+            </article>
+
+            <article class="memory">
+
+                <div class="date">
+                    Memory 37
+                </div>
+
+
+                <div class="photo">
+
+                    <img
+                        src="photos/好吃.jpeg"
+                        alt="Memory 4"
+                    >
+
+
+                    <div class="photo-caption">
+                        ah这就是美食吗， 太好吃了
+                    </div>
+
+                </div>
+
+            </article>
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         EMOTIONAL PART
+    ========================= -->
+
+    <section class="emotional">
+
+        <div class="emotional-content">
+
+            <div class="emotional-small">
+                Some things don't need a joke.
+            </div>
+
+
+            <h2>
+                Not every photo is perfect.
+                But every moment happened.
+            </h2>
+
+
+            <p>
+                We've had stupid moments,
+                embarrassing moments,
+                random moments,
+                and moments that probably wouldn't
+                make sense to anyone else.
+            </p>
+
+
+            <p>
+                But those are the moments WE'll remember :)
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FINAL MESSAGE
+    ========================= -->
+
+    <section class="final">
+
+        <div class="final-content">
+
+
+            <h2>
+                Happy Birthday, Jo Xing.
+            </h2>
+
+
+            <p>
+                Time keeps moving, and eventually we'll all
+                go different ways, meet different people,
+                and start different chapters.
+            </p>
+
+
+            <p>
+                So We wanted to keep a little piece
+                of these moments here.
+            </p>
+
+
+            <p>
+                The good ones.<br>
+                The stupid ones.<br>
+                The embarrassing ones.<br>
+                And all the ones in between.
+            </p>
+
+            <p>大合照</p>
+
+
+
+            <!-- FINAL PHOTO -->
+
+            <div class="final-photo">
+
+                <img
+                    src="photos/airbnb.jpeg"
+                    alt="Our favorite memory"
+                >
+
+
+                <div class="photo-caption">
+                    One more memory worth keeping.
+                </div>
+
+            </div>
+
+            <div class="final-photo">
+
+                <img
+                    src="photos/stpm final.jpeg"
+                    alt="Our favorite memory"
+                >
+
+                <div class="photo-caption">
+                    One more memory worth keeping.
+                </div>
+
+            </div>
+
+            <div class="final-photo">
+
+                <img
+                    src="photos/makan.jpeg"
+                    alt="Our favorite memory"
+                >
+
+                <div class="photo-caption">
+                    One more memory worth keeping.
+                </div>
+
+            </div>
+
+
+
+            <p>
+                Here's to another year of nonsense,
+                and hopefully a few more memories
+                worth putting here.
+            </p>
+
+
+            <a
+                href="home.html"
+                class="back"
+            >
+                ← Back to Birthday Quest
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <footer>
+
+        THE JOJO ARCHIVES · 2026 · ALL MEMORIES RESERVED
+
+    </footer>
+
+    <script>
+        window.addEventListener("load", () => {
+        document.body.classList.add("page-loaded");
+    });
+    </script>
+</body>
+
+</html>
